@@ -37,7 +37,7 @@ test('blogs contain id as unique identifier', async () => {
   }
 })
 
-test.only('blogs post works as expected', async () => {
+test('blogs post works as expected', async () => {
   testInsert = {
     title: "Deep Learning",
     author: "Ian Goodfellow",
@@ -154,7 +154,7 @@ test('check for deletion of blog', async () => {
     .expect(404)
 })
 
-test.only('check for update of nr or likes on a blog', async () => {
+test('check for update of nr or likes on a blog', async () => {
   testInsert = {
     title: "Programming Pearls",
     author: "Jon Bentley",
@@ -203,3 +203,20 @@ test.only('check for update of nr or likes on a blog', async () => {
 after(async () => {
   await mongoose.connection.close()
 })
+
+test.only('blogs post works as expected - error when not authenticated', async () => {
+  testInsert = {
+    title: "Deep Learning",
+    author: "Ian Goodfellow",
+    url: "https://example.com/deep-learning",
+    likes: 50
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(testInsert)
+    .set('Accept', 'application/json')
+    .expect(401)
+})
+
+
